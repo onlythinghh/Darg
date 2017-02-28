@@ -3,14 +3,55 @@
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
-		<script type="text/javascript" src="DRAG.js" ></script>
+		<style>
+			.div1{position: absolute;top:0;left: 0; width: 150px;height: 150px;background: red;}
+		</style>
+		<!--<script type="text/javascript" src="DRAG.js" ></script>-->
+		<script src="js/jquery-1.11.3.min.js"></script>
+		<script>
+			$(function () {
+				var dirX = 0;
+                var dirY = 0;
+                $('.div1').mousedown(function(ev) {
+                    //鼠标点下的时候获取div的位置
+               		dirX = ev.pageX - $(this).offset().left;
+                    dirY = ev.pageY - $(this).offset().top;
+					$(document).mousemove(function (ev) {
+                        //鼠标移动的距离 = 当前移动到的位置（new）- 鼠标按下时候保存的位置（old）
+						var Wx = ev.pageX - dirX;
+                        var Hy = ev.pageY - dirY;
+                        //得到div距离窗口的位置（上下左右）
+                        var L = $(window).width() - $('.div1').width();
+                        var T = $(window).height() - $('.div1').height();
+                        //判断div的位置将其限制在窗口之内
+                        if (Wx < 0 ){	//左右
+							Wx = 0;
+						}else if ( Wx > L ){
+							Wx = L;
+						}
+                        if ( Hy < 0 ){	//上下
+                            Hy = 0;
+                        }else if ( Hy > T ){
+                            Hy = T;
+                        }
+                        //(Hy<0) ? Hy=0:0 ;  //三目方法
+						$('.div1').css( {"left":Wx,"top":Hy} )
+                    });
+					//鼠标松开的时候停掉所有事件
+					$(document).mouseup(function (ev) {
+						$(document).off();
+                    });
+					return false;
+				});
+            });
+		</script>
 	</head>
 	<body>
 		<div class="div1"></div>
 		<!--
         	作者：870114828@qq.com
         	时间：2016-08-21
-        	描述：拖拽cccsss
+        	描述：jq拖拽小实例
         -->
 	</body>
 </html>
